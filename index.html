@@ -1,113 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>March Madness Office Challenge</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Office pool • live bracket • auto leaderboard" />
+  <link rel="stylesheet" href="./styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
+  <main class="app-shell">
+    <section class="hero-card">
+      <p class="eyebrow">Office pool • live bracket • auto leaderboard</p>
+      <h1>March Madness<br />Office Challenge</h1>
+      <p class="hero-copy">
+        A real bracket app your coworkers can use from their phones. Employees pick 2 teams,
+        scores update live, winners advance automatically, and the leaderboard recalculates itself.
+      </p>
 
-  <header class="hero">
-    <div>
-      <div class="eyebrow">Office pool • live bracket • auto leaderboard</div>
-      <h1>March Madness<br>Office Challenge</h1>
-      <p class="hero-copy">A real bracket app your coworkers can use from their phones. Employees pick 2 teams, scores update live, winners advance automatically, and the leaderboard recalculates itself.</p>
       <div class="hero-actions">
-        <button id="open-entry-modal" class="btn btn-primary">Enter picks</button>
-        <button id="refresh-live" class="btn btn-secondary">Refresh live scores</button>
+        <button id="open-entry-modal" class="primary-btn" type="button">Enter picks</button>
+        <button id="refresh-live" class="ghost-btn" type="button">Refresh live scores</button>
       </div>
-      <div class="live-strip">
-        <span class="live-pill">LIVE</span>
-        <span id="live-status">Waiting for first sync…</span>
-      </div>
-    </div>
 
-    <div class="hero-card glass">
-      <div class="hero-stat">
-        <span class="hero-stat-label">Entries</span>
-        <strong id="entry-count">0</strong>
+      <div class="status-row">
+        <span id="live-status" class="live-pill">LIVE Waiting for first sync…</span>
       </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Games finalized</span>
-        <strong id="finalized-count">0</strong>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Last updated</span>
-        <strong id="last-updated">—</strong>
-      </div>
-      <div class="hero-note">Tip: deploy this on Vercel, plug in Supabase, and everybody gets the same live view.</div>
-    </div>
-  </header>
 
-  <main class="layout">
-    <section class="panel glass leaderboard-panel">
-      <div class="panel-header">
-        <div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Entries</div>
+          <div id="entry-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Games finalized</div>
+          <div id="finalized-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Last updated</div>
+          <div id="last-updated" class="stat-value">—</div>
+        </div>
+      </div>
+
+      <p class="tip-text">
+        Tip: deploy this on Vercel, plug in Supabase, and everybody gets the same live view.
+      </p>
+    </section>
+
+    <section class="content-grid">
+      <section class="panel">
+        <div class="panel-header">
           <h2>Leaderboard</h2>
           <p>Points by how far each person’s 2 teams advance.</p>
         </div>
-      </div>
-      <div id="leaderboard" class="leaderboard"></div>
-    </section>
+        <div id="leaderboard" class="panel-body"></div>
+      </section>
 
-    <section class="panel glass picks-panel">
-      <div class="panel-header">
-        <div>
+      <section class="panel">
+        <div class="panel-header">
           <h2>Most-picked teams</h2>
           <p>Good for bragging rights and rooting interest.</p>
         </div>
-      </div>
-      <div id="most-picked" class="most-picked"></div>
+        <div id="most-picked" class="panel-body"></div>
+      </section>
     </section>
 
-    <section class="panel glass bracket-panel">
-      <div class="panel-header sticky-head">
-        <div>
-          <h2>Live bracket</h2>
-          <p>Auto-fed from your bracket data and live game sync.</p>
-        </div>
+    <section class="panel bracket-panel">
+      <div class="panel-header">
+        <h2>Live bracket</h2>
+        <p>Auto-fed from your bracket data and live game sync.</p>
       </div>
-      <div id="bracket" class="bracket-scroll"></div>
+      <div id="bracket" class="bracket-body"></div>
     </section>
   </main>
 
   <dialog id="entry-modal" class="entry-modal">
-    <form id="entry-form" method="dialog" class="entry-form glass">
-      <div class="modal-top">
+    <form id="entry-form" method="dialog" class="entry-form">
+      <div class="modal-head">
         <div>
           <div class="eyebrow">Join the pool</div>
           <h3>Enter your 2 teams</h3>
         </div>
-        <button type="button" id="close-entry-modal" class="icon-btn">✕</button>
+        <button id="close-entry-modal" class="icon-btn" type="button">✕</button>
       </div>
 
-      <label>
-        Your name
-        <input id="employee-name" type="text" required maxlength="60" placeholder="Ted" />
+      <label class="field">
+        <span>Your name</span>
+        <input id="employee-name" type="text" required />
       </label>
 
-      <label>
-        Team 1
+      <label class="field">
+        <span>Team 1</span>
         <select id="team-one" required></select>
       </label>
 
-      <label>
-        Team 2
+      <label class="field">
+        <span>Team 2</span>
         <select id="team-two" required></select>
       </label>
 
-      <div class="helper-text">Each person gets 2 different teams. Scoring doubles each round: 1, 2, 4, 8, 16, 32.</div>
+      <p class="fine-print">
+        Each person gets 2 different teams. Scoring doubles each round: 1, 2, 4, 8, 16, 32.
+      </p>
 
-      <div class="form-actions">
-        <button type="button" id="cancel-entry" class="btn btn-secondary">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save picks</button>
+      <div class="modal-actions">
+        <button id="cancel-entry" type="button" class="ghost-btn">Cancel</button>
+        <button type="submit" class="primary-btn">Save picks</button>
       </div>
     </form>
   </dialog>
@@ -115,7 +113,7 @@
   <template id="leaderboard-row-template">
     <div class="leaderboard-row">
       <div class="rank"></div>
-      <div class="entrant">
+      <div class="entrant-meta">
         <div class="entrant-name"></div>
         <div class="entrant-picks"></div>
       </div>
@@ -123,6 +121,6 @@
     </div>
   </template>
 
-  <script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
