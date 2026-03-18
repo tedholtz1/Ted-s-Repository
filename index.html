@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PM Music March Madness 2026</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">PM Music Center • 2026 pool tracker</div>
+        <h1>March Madness Tracker</h1>
+        <p class="sub">Fixed employee picks, live bracket updates, and a clean status board showing who is still alive, who is out, and who wins it all.</p>
+      </div>
+      <div class="actions">
+        <button id="refresh-live" class="btn primary">Refresh live results</button>
+        <button id="reset-bracket" class="btn ghost">Reset to original bracket</button>
+      </div>
+      <div class="meta">
+        <div class="meta-card"><span>Employees</span><strong id="employee-count">0</strong></div>
+        <div class="meta-card"><span>Alive</span><strong id="alive-count">0</strong></div>
+        <div class="meta-card"><span>Champion</span><strong id="champion-name">—</strong></div>
+        <div class="meta-card"><span>Last update</span><strong id="last-updated">—</strong></div>
+      </div>
+      <div id="status-bar" class="status-bar">Loading…</div>
+    </section>
+
+    <section class="layout">
+      <section class="panel tracker-panel">
+        <div class="panel-header">
+          <h2>Employee tracker</h2>
+          <p>Each person’s two teams and current status.</p>
+        </div>
+        <div id="employee-tracker" class="tracker-list"></div>
+      </section>
+
+      <section class="panel bracket-panel">
+        <div class="panel-header">
+          <h2>Bracket</h2>
+          <p>Winners advance automatically when the live feed matches a game.</p>
+        </div>
+        <div id="bracket-view" class="bracket-view"></div>
+      </section>
+    </section>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
